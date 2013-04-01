@@ -1,3 +1,11 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+
+  layout false
+
+  protected
+
+  def request_id
+    request.uuid
+  end
+
 end
