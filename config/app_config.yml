@@ -1,0 +1,8 @@
+---
+
+development:
+  hvsc_path: /home/lars/c64/hvsc
+
+test:
+
+production:
