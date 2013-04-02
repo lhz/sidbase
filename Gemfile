@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.13'
 
 gem 'pg'
+gem 'rabl'
+gem 'oj'
 
 gem 'rsid', :git => 'git@github.com:lhz/rsid.git'
 

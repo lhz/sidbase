@@ -8,6 +8,7 @@ class ApiController < ApplicationController
   around_filter :write_request_wrapper, :except => [:index, :show]
   after_filter  :response_headers
 
+  respond_to :json, :xml
 
   # GET /api/:models.:format
   def index
@@ -16,13 +17,14 @@ class ApiController < ApplicationController
     [:count, :total].each do |attr|
       header attr, result[attr] if result[attr]
     end
-    render format => Serializer.serialize(result[:result], options)
+    @objects = result[:result]
+    render "#{params[:model]}/index"
   end
 
   # GET /api/:model/:id.:format
   def show
-    object = model.find(params[:id])
-    render format => Serializer.serialize(object, options)
+    @object = model.find(params[:id])
+    render "#{params[:model]}/show"
   end
 
   # POST /api/:model.:format
