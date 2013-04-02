@@ -1,7 +1,7 @@
 ---
 
 development:
-  hvsc_path: /home/lars/c64/hvsc
+  hvsc_path: ~/c64/hvsc
 
 test:
 

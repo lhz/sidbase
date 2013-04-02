@@ -1,5 +1,3 @@
-app_config = YAML.load_file("#{Rails.root}/config/app_config.yml")
-env_config = app_config[Rails.env]
+config = YAML.load_file("#{Rails.root}/config/app_config.yml")
 
-APP_CONFIG = HashWithIndifferentAccess.new
-APP_CONFIG.merge!(env_config) if env_config
+$app_config = HashWithIndifferentAccess.new(config[Rails.env] || {})
