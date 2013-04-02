@@ -11,8 +11,12 @@ class ApiController < ApplicationController
 
   # GET /api/:models.:format
   def index
-    query = QueryBuilder.new(model, params)
-    render format => Serializer.serialize(query.search, options)
+    query  = QueryBuilder.new(model, params)
+    result = query.search
+    [:count, :total].each do |attr|
+      header attr, result[attr] if result[attr]
+    end
+    render format => Serializer.serialize(result[:result], options)
   end
 
   # GET /api/:model/:id.:format
@@ -70,8 +74,6 @@ class ApiController < ApplicationController
 
   def request_wrapper(operation, &block)
     begin
-      #ClientAccess.instance.has_access?(client, model, operation) or
-      #  raise ApiException.access_denied(client_name, model, operation)
       yield
     rescue Exception => ex
       handle_exception(ex)
@@ -79,7 +81,6 @@ class ApiController < ApplicationController
   end
 
   def response_headers
-    header :request_id, request_id
     header :query, request.query_string if request.query_string.size > 0
   end
 
@@ -122,8 +123,6 @@ class ApiController < ApplicationController
   def options
     @options ||= {
       :request => request,
-      # :client  => client_name,
-      # :event   => params[:event],
       :format  => check_format(params[:format]),
       :include => param_list_to_symbols(:include),
       :exclude => param_list_to_symbols(:exclude),
@@ -145,8 +144,8 @@ class ApiController < ApplicationController
 
   def log_request
     started_at = Time.now
-    logger.prefix = "[#{request_id}]"
-    logger.info "#{request.method} REQUEST FROM #{client_name} TO #{request.path} #{params.inspect}"
+    logger.prefix = "[#{request.uuid}]"
+    logger.info "#{request.method} REQUEST TO #{request.path} #{params.inspect}"
     yield
     millisecs = "%.3f" % [(Time.now - started_at) * 1000]
     logger.info { "#{request.method} REQUEST COMPLETED IN #{millisecs} ms." }
@@ -155,10 +154,6 @@ class ApiController < ApplicationController
 
   def log_exception(exception)
     logger.error "API_EXCEPTION: #{exception}"
-  end
-
-  def client_name
-    'guest'
   end
 
 end
