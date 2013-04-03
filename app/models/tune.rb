@@ -1,6 +1,6 @@
 class Tune < ActiveRecord::Base
   attr_accessible :author, :name, :path, :released, :size,
-    :year, :load, :init, :play, :songs, :model
+    :year, :load, :init, :play, :songs, :model, :sort_name
 
   has_and_belongs_to_many :authors
   has_and_belongs_to_many :groups
@@ -11,7 +11,9 @@ class Tune < ActiveRecord::Base
   validates :released, :presence => true
   validates :size,     :presence => true
 
-  def name_sans_article
-    name.sub(/^(A|An|The) /i, '')
+  before_save :update_sort_name
+
+  def update_sort_name
+    self.sort_name = name.sub(/^(A|An|The) (.+)$/i) { "#{$2}, #{$1}"}
   end
 end
