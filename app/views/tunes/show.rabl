@@ -1,8 +1,7 @@
 object @object
+cache  @object
 
-attributes :id, :name, :author, :released, :year
-attributes :path, :size, :model, :songs
-attributes :load, :init, :play
+extends "tunes/base"
 
 child :authors do
   attributes :name, :handle
