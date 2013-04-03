@@ -1,8 +1,8 @@
 GIT
   remote: git@github.com:lhz/rsid.git
-  revision: 08c015ce7e0e252ef9b6389b5c229bb96577e44a
+  revision: 49c84b3799cb895719d56677b8ed2a9c48dd0ab5
   specs:
-    rsid (0.0.1)
+    rsid (0.0.2)
 
 GEM
   remote: https://rubygems.org/

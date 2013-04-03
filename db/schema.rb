@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130401181904) do
+ActiveRecord::Schema.define(:version => 20130403212233) do
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -30,6 +30,14 @@ ActiveRecord::Schema.define(:version => 20130401181904) do
 
   add_index "authors_tunes", ["author_id", "tune_id"], :name => "index_authors_tunes_on_author_id_and_tune_id"
 
+  create_table "companies", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "companies", ["name"], :name => "index_companies_on_name"
+
   create_table "groups", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -45,6 +53,15 @@ ActiveRecord::Schema.define(:version => 20130401181904) do
 
   add_index "groups_tunes", ["group_id", "tune_id"], :name => "index_groups_tunes_on_group_id_and_tune_id"
 
+  create_table "songs", :force => true do |t|
+    t.integer "tune_id"
+    t.integer "position"
+    t.integer "duration"
+    t.string  "end_type"
+  end
+
+  add_index "songs", ["tune_id"], :name => "index_songs_on_tune_id"
+
   create_table "tunes", :force => true do |t|
     t.string   "name"
     t.string   "author"
@@ -57,8 +74,11 @@ ActiveRecord::Schema.define(:version => 20130401181904) do
     t.integer  "load"
     t.integer  "init"
     t.integer  "play"
-    t.integer  "songs"
+    t.integer  "song_count"
     t.string   "model"
+    t.integer  "start_song"
+    t.integer  "speed"
+    t.integer  "sid2"
   end
 
   add_index "tunes", ["author"], :name => "index_tunes_on_author"
