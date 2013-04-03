@@ -10,4 +10,8 @@ class Tune < ActiveRecord::Base
   validates :path,     :presence => true, :uniqueness => true
   validates :released, :presence => true
   validates :size,     :presence => true
+
+  def name_sans_article
+    name.sub(/^(A|An|The) /i, '')
+  end
 end
