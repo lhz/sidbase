@@ -11,12 +11,4 @@ class Tune < ActiveRecord::Base
   validates :released, :presence => true
   validates :size,     :presence => true
 
-  before_save do
-    self.sort_name = generate_sort_name
-  end
-
-  def generate_sort_name
-    (name && name[/^(A|An|The) (.+)$/]) ? "#{$2}, #{$1}" : name
-  end
-
 end

@@ -26,7 +26,7 @@ class HVSC
 
     rsid = RSID.load(path)
     tune = Tune.find_or_create_by_path(rel_path)
-    tune.name     = rsid.name
+    tune.name     = sortable_name(rsid.name)
     tune.author   = rsid.author
     tune.released = rsid.released
     tune.size     = File.size(path)
@@ -48,6 +48,14 @@ class HVSC
 
     tune.groups = rsid.groups.map do |name|
       Group.find_or_create_by_name!(name)
+    end
+  end
+
+  def sortable_name(name)
+    if name && name[/^(A|An|The) (.+)$/]
+      "#{$2}, #{$1}"
+    else
+      name
     end
   end
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130403062118) do
+ActiveRecord::Schema.define(:version => 20130401181904) do
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -59,7 +59,6 @@ ActiveRecord::Schema.define(:version => 20130403062118) do
     t.integer  "play"
     t.integer  "songs"
     t.string   "model"
-    t.string   "sort_name"
   end
 
   add_index "tunes", ["author"], :name => "index_tunes_on_author"
