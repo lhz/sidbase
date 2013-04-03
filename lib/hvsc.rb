@@ -34,9 +34,9 @@ class HVSC
     tune.load       = rsid.load
     tune.init       = rsid.init_address
     tune.play       = rsid.play_address
-    tune.songs      = rsid.songs
+    tune.song_count = rsid.songs
     tune.start_song = rsid.start_song || 1
-    tune.speed      = rsid.speed
+    tune.speed      = (rsid.speed >= (2 ** 31) ? rsid.speed - (2 ** 32) : rsid.speed)
     tune.sid2       = rsid.sid2_address
     tune.model      = rsid.model_label
     tune.save!
