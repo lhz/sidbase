@@ -11,9 +11,12 @@ class Tune < ActiveRecord::Base
   validates :released, :presence => true
   validates :size,     :presence => true
 
-  before_save :update_sort_name
-
-  def update_sort_name
-    self.sort_name = name.sub(/^(A|An|The) (.+)$/i) { "#{$2}, #{$1}"}
+  before_save do
+    self.sort_name = generate_sort_name
   end
+
+  def generate_sort_name
+    (name && name[/^(A|An|The) (.+)$/]) ? "#{$2}, #{$1}" : name
+  end
+
 end

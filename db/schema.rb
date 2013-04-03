@@ -30,14 +30,6 @@ ActiveRecord::Schema.define(:version => 20130403062118) do
 
   add_index "authors_tunes", ["author_id", "tune_id"], :name => "index_authors_tunes_on_author_id_and_tune_id"
 
-  create_table "companies", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "companies", ["name"], :name => "index_companies_on_name"
-
   create_table "groups", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
