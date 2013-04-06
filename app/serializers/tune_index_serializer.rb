@@ -1,3 +1,3 @@
 class TuneIndexSerializer < ActiveModel::Serializer
-  attributes :id, :name, :released, :model, :path
+  attributes :id, :name, :author, :released, :model, :path
 end
