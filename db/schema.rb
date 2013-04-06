@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130403212233) do
+ActiveRecord::Schema.define(:version => 20130406201515) do
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -67,13 +67,13 @@ ActiveRecord::Schema.define(:version => 20130403212233) do
     t.string   "author"
     t.string   "released"
     t.string   "path"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.integer  "size"
     t.string   "year"
-    t.integer  "load"
-    t.integer  "init"
-    t.integer  "play"
+    t.integer  "load_address"
+    t.integer  "init_address"
+    t.integer  "play_address"
     t.integer  "song_count"
     t.string   "model"
     t.integer  "start_song"

@@ -18,13 +18,15 @@ class ApiController < ApplicationController
       header attr, result[attr] if result[attr]
     end
     @objects = result[:result]
-    render "#{params[:model]}/index"
+    # render "#{params[:model]}/index" # RABL
+    render :json => @objects, :each_serializer => index_serializer
   end
 
   # GET /api/:model/:id.:format
   def show
     @object = model.find(params[:id])
-    render "#{params[:model]}/show"
+    # render "#{params[:model]}/show"
+    render :json => @object #, :serializer => show_serializer
   end
 
   # POST /api/:model.:format
@@ -48,6 +50,10 @@ class ApiController < ApplicationController
   #   render format => Serializer.serialize(object, options)
   # end
 
+  def default_serializer_options
+    { :root => false }
+  end
+
 
   private
 
@@ -64,6 +70,14 @@ class ApiController < ApplicationController
     @model ||= Inflector.modelize(params[:model].to_s)
   rescue
     raise ApiException.invalid_model(params[:model].to_s)
+  end
+
+  def index_serializer
+    "#{model}IndexSerializer".constantize
+  end
+
+  def show_serializer
+    "#{model}Serializer".constantize
   end
 
   def read_request_wrapper(&block)
