@@ -52,6 +52,9 @@ GEM
     execjs (1.4.0)
       multi_json (~> 1.0)
     fastthread (1.0.7)
+    group_cache_key (0.4.1)
+      activerecord
+      activesupport
     hike (1.2.1)
     i18n (0.6.1)
     journey (1.0.4)
@@ -157,6 +160,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   coffee-rails (~> 3.2.1)
+  group_cache_key
   jquery-rails
   passenger
   pg

@@ -8,47 +8,27 @@ class ApiController < ApplicationController
   around_filter :write_request_wrapper, :except => [:index, :show]
   after_filter  :response_headers
 
-  respond_to :json, :xml
+  respond_to :json
 
   # GET /api/:models.:format
   def index
-    query  = QueryBuilder.new(model, params)
-    result = query.search
-    [:count, :total].each do |attr|
-      header attr, result[attr] if result[attr]
+    query = QueryBuilder.new(model, params)
+    result  = query.search
+    objects = result[:objects]
+    if stale?(:etag => objects, :last_modified => objects.map(&:updated_at).max, :public => true)
+      header :count, result[:count]
+      header :total, result[:total] if result[:total]
+      render :json => objects, :each_serializer => index_serializer
     end
-    @objects = result[:result]
-    # render "#{params[:model]}/index" # RABL
-    render :json => @objects, :each_serializer => index_serializer
   end
 
   # GET /api/:model/:id.:format
   def show
-    @object = model.find(params[:id])
-    # render "#{params[:model]}/show"
-    render :json => @object #, :serializer => show_serializer
+    object = model.find(params[:id])
+    if stale?(object, :public => true)
+      render :json => object, :serializer => show_serializer
+    end
   end
-
-  # POST /api/:model.:format
-  # def create
-  #   object = Deserializer.deserialize(params,
-  #     options.merge(:mode => :create))
-  #   render format => Serializer.serialize(object, options)
-  # end
-
-  # PUT /api/:model/:id.:format
-  # def update
-  #   object = Deserializer.deserialize(params,
-  #     options.merge(:mode => :update))
-  #   render format => Serializer.serialize(object, options)
-  # end
-
-  # DELETE /api/:model/:id.:format
-  # def delete
-  #   object = model.find(params[:id])
-  #   object.destroy
-  #   render format => Serializer.serialize(object, options)
-  # end
 
   def default_serializer_options
     { :root => false }
@@ -97,7 +77,12 @@ class ApiController < ApplicationController
   end
 
   def response_headers
-    header :query, request.query_string if request.query_string.size > 0
+    if request.get?
+      headers['Cache-Control'] = 'must-revalidate'
+    end
+    if request.query_string.size > 0
+      header :query, request.query_string
+    end
   end
 
   # Handle exception that occured during action processing

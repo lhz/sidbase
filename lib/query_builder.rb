@@ -14,8 +14,8 @@ class QueryBuilder
   def search
     result = query(:search => true)
     hash = {
-      :count  => result.size,
-      :result => result.to_a,
+      :count   => result.size,
+      :objects => result.all,
     }
     hash[:total] = query(:count => true) if @params['total']
     hash
