@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.13'
 gem 'pg'
 gem 'active_model_serializers'
+gem 'pry'
 
 gem 'rsid', :git => 'git@github.com:lhz/rsid.git'
 
@@ -16,10 +17,6 @@ gem 'jquery-rails'
 
 group :test, :development do
   gem 'rspec-rails', '~> 2.13'
-end
-
-group :development do
-  gem 'pry'
 end
 
 group :production do
