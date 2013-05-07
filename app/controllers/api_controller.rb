@@ -10,7 +10,13 @@ class ApiController < ApplicationController
 
   respond_to :json
 
-  # GET /api/:models.:format
+  # OPTIONS /api/v1/:model
+  def options
+    headers['Allow'] = 'HEAD,GET'
+    render :nothing => true, :status => 200, :content_type => 'text/plain'
+  end
+
+  # GET /api/v1/:model.:format
   def index
     query = QueryBuilder.new(model, params)
     result  = query.search
@@ -22,7 +28,7 @@ class ApiController < ApplicationController
     end
   end
 
-  # GET /api/:model/:id.:format
+  # GET /api/v1/:model/:id.:format
   def show
     object = model.find(params[:id])
     if stale?(object, :public => true)
@@ -96,12 +102,6 @@ class ApiController < ApplicationController
       ax = ApiException.validation_failed(ex.record)
     when ActiveRecord::ActiveRecordError
       ax = ApiException.active_record_error(model.name, ex)
-    when StandardError
-      if ex.message =~ /Invalid JSON string/
-        ax = ApiException.parse_error(ex.message)
-      else
-        ax = ApiException.new(ex)
-      end
     when ApiException
       ax = ex
     else
@@ -121,7 +121,7 @@ class ApiController < ApplicationController
   end
 
   # Generate options hash from params
-  def options
+  def options_hash
     @options ||= {
       :request => request,
       :format  => check_format(params[:format]),
