@@ -101,15 +101,16 @@ class QueryBuilder
       qcol = %Q("#{column}")
     end
     where = case suffix
-            when 'like'     then ["#{qcol} ILIKE ?",     *value]
-            when 'not_like' then ["NOT #{qcol} ILIKE ?", *value]
-            when 'min'      then ["#{qcol} >= ?",        *value]
-            when 'max'      then ["#{qcol} <= ?",        *value]
-            when 'not'      then ["#{qcol} != ?",        *value]
-            when 'in'       then ["#{qcol} IN (?)",      *value]
-            when 'not_in'   then ["NOT #{qcol} IN (?)",  *value]
-            when 'not'      then ["NOT #{qcol} = ?",     *value]
-            when nil        then ["#{qcol} = ?",         *value]
+            when 'like'     then ["#{qcol} ILIKE ?",          *value]
+            when 'not_like' then ["NOT #{qcol} ILIKE ?",      *value]
+            when 'ts'       then ["#{qcol} @@ to_tsquery(?)", *value]
+            when 'min'      then ["#{qcol} >= ?",             *value]
+            when 'max'      then ["#{qcol} <= ?",             *value]
+            when 'not'      then ["#{qcol} != ?",             *value]
+            when 'in'       then ["#{qcol} IN (?)",           *value]
+            when 'not_in'   then ["NOT #{qcol} IN (?)",       *value]
+            when 'not'      then ["NOT #{qcol} = ?",          *value]
+            when nil        then ["#{qcol} = ?",              *value]
             else
               raise BadQueryError.new("Invalid comparator suffix: #{suffix}")
             end
@@ -156,7 +157,7 @@ class QueryBuilder
   end
 
   def comparator_pattern
-    '(like|not_like|min|max|not|in|not_in)'
+    '(like|not_like|ts|min|max|not|in|not_in)'
   end
 
   def column_pattern

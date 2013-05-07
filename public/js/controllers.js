@@ -9,7 +9,7 @@ function SearchCtrl($scope, $resource) {
 
     $scope.doSearch = function () {
 	$scope.searchResult = $scope.sidbase.index(
-	    { model: 'tunes', 'name.like': $scope.searchTerm },
+	    { model: 'tunes', 'search.ts': $scope.searchTerm },
 	    function (data, headers) {
 		$scope.searchTotal = headers('X-Api-Total');
 	    }
@@ -20,7 +20,7 @@ function SearchCtrl($scope, $resource) {
 function GridSearchCtrl($scope, $resource) {
 
     $scope.sidbase = $resource('/api/v1/:model.json',
-        { model: 'tunes', 'name.like': '', order: 'author,name' },
+        { model: 'tunes', 'search.ts': '', order: 'author,year,name' },
         { index: { method: 'GET', isArray: true }});
 
     $scope.filterOptions = {
@@ -39,7 +39,7 @@ function GridSearchCtrl($scope, $resource) {
         // setTimeout(function () {
 
 	$scope.myData = $scope.sidbase.index(
-	    { model: 'tunes', 'name.like': searchText, total: 1,
+	    { model: 'tunes', 'search.ts': searchText, total: 1,
 	      limit: pageSize, offset: (page - 1) * pageSize },
 	    function (data, headers) {
 		$scope.pagingOptions.totalServerItems = headers('X-Api-Total');
