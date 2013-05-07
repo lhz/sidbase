@@ -89,6 +89,8 @@ class QueryBuilder
       value = [value.split(',')]
     when 'like', 'not_like'
       value = "%#{value}%" unless value[/%/]
+    when 'ts'
+      value = value.split(' ').join(' & ')
     end
     if column.is_a?(Array)
       if column[0] == 'fields'
