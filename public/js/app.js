@@ -1,4 +1,4 @@
-angular.module('SIDSearch', ['ngResource']);
+angular.module('SIDSearch', ['ngResource', 'ngGrid']);
 
     // config(['$routeProvider', function($routeProvider) {
     // 	$routeProvider.
