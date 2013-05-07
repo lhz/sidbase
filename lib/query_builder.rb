@@ -1,6 +1,8 @@
 
 class QueryBuilder
 
+  class BadQueryError < StandardError; end
+
   def initialize(model, params)
     logger.debug "QueryBuilder: params = #{params.inspect}"
     @params  = params
@@ -109,7 +111,7 @@ class QueryBuilder
             when 'not'      then ["NOT #{qcol} = ?",     *value]
             when nil        then ["#{qcol} = ?",         *value]
             else
-              raise "Invalid comparator suffix: #{suffix}"
+              raise BadQueryError.new("Invalid comparator suffix: #{suffix}")
             end
     @matches << where
   end
@@ -185,7 +187,7 @@ class QueryBuilder
               else
                 false
               end
-      raise "Invalid search parameter: '#{key}' = '#{value}'" if !valid
+      raise BadQueryError.new("Invalid search parameter: '#{key}' = '#{value}'") unless valid
       hash[key.to_s] = value
     end
   end

@@ -26,19 +26,19 @@ class HVSC
 
     rsid = RSID.load(path)
     tune = Tune.find_or_create_by_path(rel_path)
-    tune.name       = sortable_name(rsid.name)
-    tune.author     = rsid.author
-    tune.released   = rsid.released
-    tune.size       = File.size(path)
-    tune.year       = rsid.year
-    tune.load       = rsid.load
-    tune.init       = rsid.init_address
-    tune.play       = rsid.play_address
-    tune.song_count = rsid.songs
-    tune.start_song = rsid.start_song || 1
-    tune.speed      = (rsid.speed >= (2 ** 31) ? rsid.speed - (2 ** 32) : rsid.speed)
-    tune.sid2       = rsid.sid2_address
-    tune.model      = rsid.model_label
+    tune.name         = sortable_name(rsid.name)
+    tune.author       = rsid.author
+    tune.released     = rsid.released
+    tune.size         = File.size(path)
+    tune.year         = rsid.year
+    tune.load_address = rsid.load
+    tune.init_address = rsid.init_address
+    tune.play_address = rsid.play_address
+    tune.song_count   = rsid.songs
+    tune.start_song   = rsid.start_song || 1
+    tune.speed        = (rsid.speed >= (2 ** 31) ? rsid.speed - (2 ** 32) : rsid.speed)
+    tune.sid2         = rsid.sid2_address
+    tune.model        = rsid.model_label
     tune.save!
 
     # tune.authors = rsid.authors.map do |name|
